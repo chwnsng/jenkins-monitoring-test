@@ -34,6 +34,14 @@ services:
     networks:
       - jenkins
 
+  docker-proxy:
+    image: shipyard/docker-proxy
+    container_name: docker-proxy-1
+    ports: 
+      - '3375:2375'
+    volumes:
+      - '/var/run/docker.sock:/var/run/docker.sock'
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus-1
