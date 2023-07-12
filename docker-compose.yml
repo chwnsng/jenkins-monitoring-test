@@ -61,6 +61,7 @@ services:
       - 9090:9090
     volumes:
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
+      - 'prometheus_data:/prometheus'
 
   grafana:
     image: grafana/grafana-enterprise
@@ -77,6 +78,7 @@ volumes:
   jenkins-data:
   jenkins-docker-certs:
   grafana_storage: {}
+  prometheus_data:
   # prometheus-config:
   #   type: volume
   #   device: "./prometheus/prometheus.yml"
