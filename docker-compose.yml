@@ -1,4 +1,4 @@
-version: '3.3'
+version: '3.8'
 services:
   jenkins-docker:
     image: docker:dind
@@ -42,6 +42,18 @@ services:
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
 
+  agent:
+    image: jenkins/ssh-agent:jdk11
+    container_name: agent-1
+    expose:
+      - 22
+    networks:
+      - jenkins    
+    privileged: true
+    user: root
+    env_file: .env
+    # the .env file contains the variable JENKINS_AGENT_SSH_PUBKEY
+
   prometheus:
     image: prom/prometheus
     container_name: prometheus-1
@@ -54,7 +66,9 @@ services:
     image: grafana/grafana-enterprise
     container_name: grafana-1
     ports: 
-    - 3000:3000
+      - 3000:3000
+    volumes:
+      - 'grafana_storage:/var/lib/grafana'
 
 networks:
   jenkins:
@@ -62,6 +76,7 @@ networks:
 volumes:
   jenkins-data:
   jenkins-docker-certs:
+  grafana_storage: {}
   # prometheus-config:
   #   type: volume
   #   device: "./prometheus/prometheus.yml"
