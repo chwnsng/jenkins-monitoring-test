@@ -70,6 +70,14 @@ services:
       - 3000:3000
     volumes:
       - 'grafana_storage:/var/lib/grafana'
+      - 'grafana_ini:/etc/grafana'
+    # environment:
+    #   - 'GF_SMTP_ENABLED=true'
+    #   - 'GF_SMTP_HOST=smtp.gmail.com:587'
+    #   - 'GF_SMTP_USER=<email>@gmail.com'
+    #   - 'GF_SMTP_PASSWORD=<password>' #might require App Password for Gmail
+    #   - 'GF_SMTP_FROM_ADDRESS=<email>@gmail.com'
+    #   - 'GF_SMTP_FROM_NAME=grafana'
 
 networks:
   jenkins:
@@ -78,6 +86,7 @@ volumes:
   jenkins-data:
   jenkins-docker-certs:
   grafana_storage: {}
+  grafana_ini: {}
   prometheus_data:
   # prometheus-config:
   #   type: volume
