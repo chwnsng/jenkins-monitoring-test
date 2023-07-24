@@ -60,8 +60,20 @@ services:
     ports:
       - 9090:9090
     volumes:
+      - './prometheus/alert.yml:/etc/prometheus/alert.yml'
       - './prometheus/prometheus.yml:/etc/prometheus/prometheus.yml'
       - 'prometheus_data:/prometheus'
+
+  alertmanager:
+    image: prom/alertmanager
+    container_name: alertmanager-1
+    ports:
+      - 9093:9093
+    env_file: .env
+    volumes:
+      - "./alertmanager:/config"
+      - alertmanager-data:/data
+    command: --config.file=/config/alertmanager.yml --log.level=debug
 
   grafana:
     image: grafana/grafana-enterprise
@@ -81,11 +93,11 @@ services:
     #   - 'GF_SMTP_PASSWORD=<password>' #might require App Password for Gmail
     #   - 'GF_SMTP_FROM_ADDRESS=<email>@gmail.com'
     #   - 'GF_SMTP_FROM_NAME=grafana'
-  renderer:
-    image: grafana/grafana-image-renderer:latest
-    container_name: renderer-1
-    ports:
-      - 8081
+  # renderer:
+  #   image: grafana/grafana-image-renderer:latest
+  #   container_name: renderer-1
+  #   ports:
+  #     - 8081
 
 networks:
   jenkins:
@@ -96,6 +108,7 @@ volumes:
   grafana_storage: {}
   grafana_ini: {}
   prometheus_data:
+  alertmanager-data:
   # prometheus-config:
   #   type: volume
   #   device: "./prometheus/prometheus.yml"

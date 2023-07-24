@@ -1,0 +1,9 @@
+groups:
+  - name: DemoAlerts
+    rules:
+      - alert: JenkinsDown
+        expr: up{job="jenkins"} == 0
+        for: 3m
+        annotations:
+          summary: "Jenkins down"
+          description: "Jenkins has been down for more than 3 minutes :("
