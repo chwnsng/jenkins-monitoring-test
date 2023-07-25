@@ -1,13 +1,12 @@
+global:
+  resolve_timeout: 1m
+  slack_api_url: <your slack API URL>
+
 route:
-  receiver: "mail"
-  repeat_interval: 1m
-  group_by: [alertname]
+  receiver: "slack-notifications"
 
 receivers:
-  - name: "mail"
-    email_configs:
-      - smarthost: "smtp-relay.gmail.com:587"
-        auth_username: ${TEST_EMAIL}
-        auth_password: ${TEST_EMAIL_APP_PW}
-        from: ${TEST_EMAIL}
-        to: ${TEST_EMAIL_RCVR}
+  - name: "slack-notifications"
+    slack_configs:
+      - channel: "#prometheus-alert"
+        send_resolved: true
